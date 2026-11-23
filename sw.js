@@ -1,6 +1,6 @@
 // Service worker – caches the app so it opens with no signal.
 // Bump CACHE_VERSION whenever you change any app file (config.js, checklist.js, etc.).
-const CACHE_VERSION = "washbay-v1.0.0";
+const CACHE_VERSION = "washbay-v1.1.1";
 const ASSETS = ["./", "index.html", "app.css", "app.js", "config.js", "checklist.js",
   "lib/msal-browser.min.js", "manifest.webmanifest",
   "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png"];

@@ -9,7 +9,7 @@
   const CFG = window.WASHBAY_CONFIG;
   const LIST = window.WASHBAY_CHECKLIST;
   const FREQS = ["Daily", "Weekly", "Monthly"];
-  const APP_VERSION = "1.0.0";
+  const APP_VERSION = "1.1.0";
   const KEEP_SYNCED_DAYS = 60;            // synced records kept on device for history
   const PHOTO_MAX_PX = 1600, PHOTO_QUALITY = 0.72;
 
@@ -296,7 +296,8 @@
       const pending = (await allSubs()).filter((s) => s.status !== "synced").sort((a, b) => a.submittedAt.localeCompare(b.submittedAt));
       for (const sub of pending) {
         try {
-          if (CFG.syncMode === "powerautomate") await syncPowerAutomate(sub);
+          if (CFG.syncMode === "googlesheets") await syncGoogleSheets(sub);
+          else if (CFG.syncMode === "powerautomate") await syncPowerAutomate(sub);
           else if (CFG.syncMode === "graph") await syncGraph(sub);
           else throw new Error("Unknown syncMode: " + CFG.syncMode);
           sub.status = "synced"; sub.error = ""; sub.syncedAt = new Date().toISOString();
@@ -314,7 +315,7 @@
     } finally {
       syncing = false;
     }
-    msg.textContent = lastErr ? lastErr : ok ? `Synced ${ok} check${ok > 1 ? "s" : ""} to Excel ✓` : "";
+    msg.textContent = lastErr ? lastErr : ok ? `Synced ${ok} check${ok > 1 ? "s" : ""} ✓` : "";
     if (lastErr) msg.className = "small err";
     if (manual && !ok && !lastErr) toast("Nothing to sync");
     renderHome();
@@ -341,6 +342,29 @@
     fr.onerror = () => rej(fr.error);
     fr.readAsDataURL(blob);
   });
+
+  // Google Sheets – one POST per check to an Apps Script web app bound to the sheet.
+  // Sent as text/plain so the browser makes a "simple" request (Apps Script can't answer CORS preflights).
+  async function syncGoogleSheets(sub) {
+    const gs = CFG.googleSheets || {};
+    if (!gs.url) throw new Error("Google Sheets web app URL missing in config.js");
+    // Photo columns carry file names; the script swaps them for Google Drive links.
+    const rows = buildRows(sub, (n) => n, false).map((r) => Object.fromEntries(COLUMNS.map((c, i) => [c, r[i]])));
+    const photos = [];
+    for (const it of sub.items) for (const p of it.photos) {
+      if (!p.blob) continue;
+      photos.push({ fileName: p.name, itemNo: it.no, contentBase64: await blobToBase64(p.blob) });
+    }
+    const r = await fetchOk(gs.url, {
+      method: "POST", redirect: "follow", headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ key: gs.accessKey || "", submissionId: sub.id, frequency: sub.frequency, inspector: sub.inspector, checkDate: sub.checkDate, rows, photos })
+    }, "Google Sheets");
+    let res;
+    try { res = await r.json(); } catch {
+      throw new Error("Google Sheets: unexpected reply – check the web app is deployed with access 'Anyone'");
+    }
+    if (!res || res.ok !== true) throw new Error("Google Sheets: " + ((res && res.error) || "rejected"));
+  }
 
   // Option A – one POST per check to a Power Automate HTTP-trigger flow
   async function syncPowerAutomate(sub) {
