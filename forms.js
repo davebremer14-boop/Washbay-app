@@ -192,11 +192,6 @@
       collapse: true,
       generalComments: true,
       extras: [{ key: "spareParts", label: "Spare parts required", col: "Spare Parts" }]
-    },
-    {
-      id: "maintenance-record", title: "Maintenance Record", group: "Plant maintenance", schedule: "none",
-      header: recordHeader.map((f) => f.key === "serviceType" ? Object.assign({}, f, { required: false }) : f), freeTasks: { answers: ["OK", "Action required"] },
-      generalComments: true
     }
   ];
 

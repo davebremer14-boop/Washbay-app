@@ -1,9 +1,9 @@
 // Service worker – caches the app so it opens with no signal.
 // Bump CACHE_VERSION whenever you change any app file (config.js, checklist.js, etc.).
-const CACHE_VERSION = "cki-v2.0.0";
+const CACHE_VERSION = "cki-v2.1.0";
 const ASSETS = ["./", "index.html", "app.css", "app.js", "config.js", "forms.js",
-  "img/splash.jpg", "img/logo.png", "manifest.webmanifest",
-  "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png"];
+  "splash.jpg", "logo.png", "manifest.webmanifest",
+  "icon-180.png", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE_VERSION).then((c) => c.addAll(ASSETS)).then(() => self.skipWaiting()));

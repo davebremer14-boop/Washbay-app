@@ -9,7 +9,7 @@
   const CFG = window.WASHBAY_CONFIG;
   const FORMS = window.CKI_FORMS;
   const K = window.CKI_CONST;
-  const APP_VERSION = "2.0.0";
+  const APP_VERSION = "2.1.0";
   const KEEP_SYNCED_DAYS = 60;
   const PHOTO_MAX_PX = 1600, PHOTO_QUALITY = 0.72;
   const PREFIX = { "washbay-daily": "WD", "washbay-prestart": "WP", "washbay-operator": "WO", "fpoe-monthly": "FM", "fpoe-annual": "FA", "hpu-prestart": "HPU", "service-record": "SR", "maintenance-record": "MR" };
