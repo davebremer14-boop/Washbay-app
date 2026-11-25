@@ -1,8 +1,8 @@
 // Service worker – caches the app so it opens with no signal.
 // Bump CACHE_VERSION whenever you change any app file (config.js, checklist.js, etc.).
-const CACHE_VERSION = "washbay-v1.1.1";
-const ASSETS = ["./", "index.html", "app.css", "app.js", "config.js", "checklist.js",
-  "lib/msal-browser.min.js", "manifest.webmanifest",
+const CACHE_VERSION = "cki-v2.0.0";
+const ASSETS = ["./", "index.html", "app.css", "app.js", "config.js", "forms.js",
+  "img/splash.jpg", "img/logo.png", "manifest.webmanifest",
   "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png"];
 
 self.addEventListener("install", (e) => {

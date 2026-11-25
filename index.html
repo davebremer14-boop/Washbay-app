@@ -7,16 +7,18 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Washbay">
-  <title>Washbay Checks</title>
+  <meta name="apple-mobile-web-app-title" content="CKI MOF">
+  <title>CKI MOF Checks</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon-192.png">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="stylesheet" href="app.css">
 </head>
 <body>
+  <div id="splash"><img src="img/splash.jpg" alt=""><div class="splash-title">CKI MOF Checks</div></div>
+
   <header class="topbar">
-    <div class="brand"><span class="badge">MC</span><span id="appTitle">Washbay Checks</span></div>
+    <div class="brand"><img class="logo" src="img/logo.png" alt=""><span id="appTitle">CKI MOF Checks</span></div>
     <div id="netState" class="net"></div>
   </header>
 
@@ -26,56 +28,42 @@
       <label class="lbl" for="inspector">Inspector name</label>
       <input id="inspector" type="text" autocomplete="name" placeholder="Your full name">
     </section>
-
-    <section id="freqCards"></section>
-
+    <div id="formTiles"></div>
     <section class="card sync">
       <div class="row between">
-        <div>
-          <div class="h3">Sync to spreadsheet</div>
-          <div id="syncSummary" class="muted small"></div>
-        </div>
+        <div><div class="h3">Sync to spreadsheet</div><div id="syncSummary" class="muted small"></div></div>
         <button id="syncBtn" class="btn secondary">Sync now</button>
       </div>
-      <button id="signInBtn" class="btn primary block hidden">Sign in to Microsoft to sync</button>
       <div id="syncMsg" class="small"></div>
     </section>
-
     <section class="card">
-      <div class="row between">
-        <div class="h3">Recent checks on this device</div>
-        <button id="exportBtn" class="btn link">Export CSV</button>
-      </div>
+      <div class="row between"><div class="h3">Recent on this device</div><button id="exportBtn" class="btn link">Export CSV</button></div>
       <ul id="history" class="history"></ul>
     </section>
     <p class="muted tiny center" id="versionInfo"></p>
   </main>
 
-  <!-- CHECKLIST -->
-  <main id="check" class="screen hidden">
+  <!-- FORM -->
+  <main id="form" class="screen hidden">
     <div class="row between sticky-sub">
-      <button id="backBtn" class="btn link">‹ Back</button>
-      <div class="h2" id="checkTitle"></div>
-      <span></span>
+      <button id="backBtn" class="btn link">‹ Home</button>
+      <div class="h2" id="formTitle"></div>
+      <span class="spacer"></span>
     </div>
-    <p class="muted small center" id="checkMeta"></p>
-    <form id="checkForm" novalidate>
-      <div id="items"></div>
-      <section class="card">
-        <label class="lbl" for="generalNotes">General notes (optional)</label>
-        <textarea id="generalNotes" rows="2" placeholder="Anything else to report"></textarea>
-      </section>
+    <p class="muted small center"><span id="formDraftNote"></span><span id="formMeta"></span>
+      <button id="discardBtn" type="button" class="btn link small hidden">Start fresh</button></p>
+    <form id="formEl" novalidate>
+      <div id="formBody"></div>
       <div id="formError" class="error hidden"></div>
-      <button type="submit" class="btn primary block big">Submit check</button>
-      <p class="muted tiny center">Saved on this device first, then sent to the spreadsheet when you have signal.</p>
+      <button type="submit" class="btn primary block big">Submit</button>
+      <p class="muted tiny center">Progress is saved as you go. Submitted forms are stored on this device, then sent to the spreadsheet when you have signal.</p>
     </form>
   </main>
 
   <div id="toast" class="toast hidden"></div>
 
   <script src="config.js"></script>
-  <script src="checklist.js"></script>
-  <script src="lib/msal-browser.min.js"></script>
+  <script src="forms.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

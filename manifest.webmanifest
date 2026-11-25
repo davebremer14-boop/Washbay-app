@@ -1,6 +1,6 @@
 {
-  "name": "Washbay Checks",
-  "short_name": "Washbay",
+  "name": "CKI MOF Checks",
+  "short_name": "CKI MOF",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
